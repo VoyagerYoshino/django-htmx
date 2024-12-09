@@ -1,3 +1,11 @@
 #navbar {
     height: 100px;
 }
+
+.check-error{
+    color:red;
+}
+
+.check-success{
+    color:green;
+}
