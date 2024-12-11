@@ -9,10 +9,13 @@ urlpatterns = [
     path('login/', views.Login.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path("register/", views.RegisterView.as_view(), name="register"),
+    path('films/',views.FilmListView.as_view(),name='filmList'),
 ]
 
 htmx_urlpatterns = [
-    path('username-check/',views.UsernamecheckView,name="username-check"),
+    path('username-check/',views.username_check,name="username-check"),
+    path('add_film/',views.add_film,name="add-film"),
+    path('delete_film/<int:pk>/',views.delete_film,name="delete-film"),
 ]
 
 urlpatterns += htmx_urlpatterns

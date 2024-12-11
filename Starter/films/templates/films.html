@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="col-md-8 d-flex offset-md-2 align-items-center justify-content-between" id="listheader">
+    <h2>My Film List</h2>
+    <form class="input-group mb-3 col-md-5">
+        {% csrf_token %}
+        <input type="text" class="form-control" placeholder="enter film..." name="filmname">
+        <button class="btn btn-outline-success" type="submit" hx-post="{% url 'add-film' %}" hx-target="#mylist" hx-swap="innerHTML">Add</button>
+    </form>
+</div>
+<div class="col-md-8 d-flex offset-md-2 justify-content-between" style="border-bottom: 5px greenyellow dashed;"></div>
+<div class="col-md-8 offset-md-2" id="mylist">
+    <ul class="list-group" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+        {% for film in films %}
+        <li class="list-group-item d-flex align-items-center justify-content-between">
+            {{ film.name }}
+            <button type="button" class="btn btn-danger" hx-confirm="Are you sure?" hx-target="closest li" hx-delete="{% url 'delete-film' film.pk %}" hx-swap="outerHTML swap:0.5s">Delete</button>
+        </li>
+        {% empty %}
+        <li class="list-group-item">No films yet.</li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock content %}

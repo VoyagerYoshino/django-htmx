@@ -9,3 +9,19 @@
 .check-success{
     color:green;
 }
+
+#listheader{
+    color: blue;
+    font-size: large;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    margin-bottom: 2%;
+    margin-top: 3%;
+}
+
+.list-group-item{
+    color: blue;
+    font-size: large;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    margin-bottom: 2%;
+    margin-top: 3%;
+}
