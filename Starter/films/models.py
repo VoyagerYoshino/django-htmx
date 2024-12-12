@@ -10,3 +10,11 @@ class Film(models.Model):
     
     def __str__(self):
         return self.name
+    
+class UserFilm(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    film = models.ForeignKey(Film,on_delete=models.CASCADE)
+    order = models.PositiveBigIntegerField()
+    
+    class Meta:
+        ordering = ['order']
