@@ -4,8 +4,8 @@ from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django.views.generic import FormView, TemplateView,ListView
 from django.contrib.auth import get_user_model
-from .models import User,Film
-
+from .models import User,Film,UserFilm
+from .utils import get_max_order,reorder
 from films.forms import RegisterForm
 
 # Create your views here.
@@ -25,9 +25,11 @@ class RegisterView(FormView):
         return super().form_valid(form)
 
 class FilmListView(ListView):
-    model = Film
     template_name = "films.html"
     context_object_name = "films"
+    
+    def get_queryset(self):
+        return UserFilm.objects.filter(user=self.request.user)
     
     
 def username_check(request):
@@ -38,18 +40,30 @@ def username_check(request):
     
 def add_film(request):
     new = request.POST.get('filmname')
-    if not Film.objects.filter(name=new).exists():
-        newFilm = Film.objects.create(name=new)
-        request.user.films.add(newFilm)
-        films = request.user.films.all()
-        return render(request,'add_film.html',context={'films':films})
-    else:
-        films = request.user.films.all()
-        return render(request,'add_film.html',context={'films':films})
+    film = Film.objects.get_or_create(name=new)[0]
+    if not UserFilm.objects.filter(film=film,user=request.user).exists():
+        UserFilm.objects.create(
+            user = request.user,
+            film = film,
+            order = get_max_order(request.user)+1
+        )
+    films = UserFilm.objects.filter(user=request.user)
+    return render(request,'films_ul.html',context={'films':films})
 
 def delete_film(request,pk):
-    film = Film.objects.get(pk=pk)
-    request.user.films.remove(film)
-    if not film.users.exists():
-        film.delete()
-    return HttpResponse("")
+    UserFilm.objects.get(pk=pk).delete()
+    reorder(request.user)
+    films = UserFilm.objects.filter(user=request.user)
+    return render(request,'films_ul.html',context={'films':films})
+
+def sort(request):
+    order_pk_list = request.POST.getlist("film_order")
+    films=[]
+    for index,film_pk in enumerate(order_pk_list,start=1):
+        film = UserFilm.objects.get(pk=film_pk)
+        film.order = index
+        film.save()
+        films.append(film)
+    return render(request,'films_ul.html',context={'films':films})
+        
+    

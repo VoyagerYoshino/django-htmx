@@ -11,16 +11,7 @@
 </div>
 <div class="col-md-8 d-flex offset-md-2 justify-content-between" style="border-bottom: 5px greenyellow dashed;"></div>
 <div class="col-md-8 offset-md-2" id="mylist">
-    <ul class="list-group" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-        {% for film in films %}
-        <li class="list-group-item d-flex align-items-center justify-content-between">
-            {{ film.name }}
-            <button type="button" class="btn btn-danger" hx-confirm="Are you sure?" hx-target="closest li" hx-delete="{% url 'delete-film' film.pk %}" hx-swap="outerHTML swap:0.5s">Delete</button>
-        </li>
-        {% empty %}
-        <li class="list-group-item">No films yet.</li>
-        {% endfor %}
-    </ul>
+    {% include 'films_ul.html' %}
 </div>
 
 {% endblock content %}

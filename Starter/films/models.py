@@ -16,5 +16,9 @@ class UserFilm(models.Model):
     film = models.ForeignKey(Film,on_delete=models.CASCADE)
     order = models.PositiveBigIntegerField()
     
+    def __str__(self):
+        return self.film.name + " " + str(self.pk)
+    
     class Meta:
         ordering = ['order']
+    

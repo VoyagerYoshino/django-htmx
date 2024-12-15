@@ -1,0 +1,14 @@
+<form class="list-group sortable" hx-post="{% url 'sort' %}" hx-trigger="end" hx-target="#mylist" hx-swap="innerHTML">
+    <div class="htmx-indicator">Updating...</div>
+    {% for film in films %}
+    <div>
+        <input type="hidden" name="film_order" value="{{ film.pk }}" />
+        <li class="list-group-item d-flex align-items-center justify-content-between">
+            {{ film.order }} - {{ film.film.name }}
+            <button type="button" class="btn btn-danger" hx-confirm="Are you sure?" hx-target="#mylist" hx-delete="{% url 'delete-film' film.pk %}" hx-swap="innerHTML swap:0.5s">Delete</button>
+        </li>
+    </div>
+        {% empty %}
+        <li class="list-group-item">No films yet.</li>
+        {% endfor %}
+</form>

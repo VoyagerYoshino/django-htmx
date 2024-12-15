@@ -21,6 +21,7 @@
 
     <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@1.6.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 </head>
 <body>
     {% include 'partials/navbar.html' %}
@@ -29,6 +30,25 @@
         {% block content %}
         {% endblock %}
     </div>
+
+    <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        })
+    
+        /* sortable work only once see: https://stackoverflow.com/questions/72863484/htmx-sortable-works-only-once-rendering-makes-it-disabled */
+        /* render entire template will solve the problem too */
+        htmx.onLoad(function(content) {
+            var sortables = document.querySelectorAll(".sortable");
+            for (var i = 0; i < sortables.length; i++) {
+                var sortable = sortables[i];
+                new Sortable(sortable, {
+                    animation: 150,
+                    ghostClass: 'blue-background-class'
+                });
+            }
+        })
+    </script>
     
 </body>
 </html>
