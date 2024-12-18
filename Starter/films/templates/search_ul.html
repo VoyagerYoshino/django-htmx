@@ -1,0 +1,4 @@
+{% for film in films %}
+<!--hx vals also send JSON with request.-->
+    <button type="submit" class="list-group-item list-group-item-action" hx-post="{% url 'add-film' %}" hx-target="#mylist" hx-vals='{"filmname":"{{film.name}}"}' hx-swap="innerHTML">{{ film.name }}</button>
+{% endfor %}

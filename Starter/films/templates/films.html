@@ -5,8 +5,9 @@
     <h2>My Film List</h2>
     <form class="input-group mb-3 col-md-5">
         {% csrf_token %}
-        <input type="text" class="form-control" placeholder="enter film..." name="filmname">
+        <input type="text" class="form-control dropdown-toggle" placeholder="enter film..." name="filmname" hx-post="{% url 'search-film' %}" hx-target="#searchlist" hx-trigger="keyup changed delay:0.5s" hx-swap="innerHTML" >
         <button class="btn btn-outline-success" type="submit" hx-post="{% url 'add-film' %}" hx-target="#mylist" hx-swap="innerHTML">Add</button>
+        <div id="searchlist" class="list-group col-md-9" role="tablist"></div>
     </form>
 </div>
 <div class="col-md-8 d-flex offset-md-2 justify-content-between" style="border-bottom: 5px greenyellow dashed;"></div>

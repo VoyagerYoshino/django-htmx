@@ -25,3 +25,17 @@
     margin-bottom: 2%;
     margin-top: 3%;
 }
+
+.list-group-item-action{
+    color: blue;
+    font-size: large;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    margin: 0 0;
+}
+
+#searchlist{
+    position: absolute;
+    top:40px;
+    left: 15px;
+    z-index: 4;
+}

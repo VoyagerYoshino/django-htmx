@@ -56,6 +56,15 @@ def delete_film(request,pk):
     films = UserFilm.objects.filter(user=request.user)
     return render(request,'films_ul.html',context={'films':films})
 
+def search_film(request):
+    word = request.POST.get('filmname')
+    userfilms = UserFilm.objects.filter(user=request.user)
+    if word:
+        films = Film.objects.filter(name__contains=word).exclude(name__in=userfilms.values_list('film__name',flat=True))
+    else:
+        films = Film.objects.none()
+    return render(request,'search_ul.html',context={'films':films})
+
 def sort(request):
     order_pk_list = request.POST.getlist("film_order")
     films=[]
@@ -65,5 +74,6 @@ def sort(request):
         film.save()
         films.append(film)
     return render(request,'films_ul.html',context={'films':films})
+    
         
     
