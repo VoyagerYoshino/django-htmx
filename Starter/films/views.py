@@ -29,7 +29,7 @@ class FilmListView(ListView):
     context_object_name = "films"
     
     def get_queryset(self):
-        return UserFilm.objects.filter(user=self.request.user)
+        return UserFilm.objects.prefetch_related('film').filter(user=self.request.user)
     
     
 def username_check(request):
@@ -68,11 +68,13 @@ def search_film(request):
 def sort(request):
     order_pk_list = request.POST.getlist("film_order")
     films=[]
-    for index,film_pk in enumerate(order_pk_list,start=1):
-        film = UserFilm.objects.get(pk=film_pk)
-        film.order = index
-        film.save()
-        films.append(film)
+    films_dict = {film.pk: film for film in UserFilm.objects.filter(user=request.user)}
+    for index, film_pk in enumerate(order_pk_list, start=1):
+        film = films_dict.get(int(film_pk))
+        if film:
+            film.order = index
+            films.append(film)
+    UserFilm.objects.bulk_update(films, ['order'])
     return render(request,'films_ul.html',context={'films':films})
     
         
