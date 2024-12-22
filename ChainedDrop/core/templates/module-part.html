@@ -1,0 +1,7 @@
+<select class="form-select" name="module-bar" aria-label="Module Select" id="mod">
+    {% for module in modules %}
+      <option value="{{ module.pk }}">{{ module.name}}</option>
+    {% empty %}
+      <option selected>Open this select menu</option>
+    {% endfor %}
+</select>
