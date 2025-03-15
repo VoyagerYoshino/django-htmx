@@ -1,11 +1,10 @@
-from django.http.response import HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import render
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import FormView, TemplateView,ListView
-from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.decorators.http import require_http_methods
 from films.forms import RegisterForm
 from .models import Film
 # Create your views here.
@@ -24,11 +23,28 @@ class RegisterView(FormView):
         form.save()  # save the user
         return super().form_valid(form)
 
-
 class FilmListView(LoginRequiredMixin,ListView):
     models = Film
     context_object_name = "films"
-    template_name = "partials/films_list.html"
+    template_name = "myfilms.html"
 
     def get_queryset(self):
         return Film.objects.filter(users=self.request.user)
+
+@login_required
+def add_film(request):
+    if request.method == "POST":
+        name = request.POST.get("filmname")
+        film = Film.objects.get_or_create(name=name)[0]
+        request.user.films.add(film)
+        
+        films = request.user.films.all()
+        return render(request, "partials/films_list.html", {"films":films})
+    
+@login_required
+@require_http_methods(["DELETE"])
+def delete_film(request, pk):
+    request.user.films.remove(pk)
+    films = request.user.films.all()
+    return render(request, "partials/films_list.html", {"films":films})
+    

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col-12 d-flex justify-content-end">
+      <div class="input-group" style="max-width: 400px;">
+        <form hx-post="{% url 'add-film' %}" hx-target="#filmsList" class="d-flex w-100">
+            {% csrf_token %}
+            <input type="text" class="form-control" name="filmname" placeholder="输入电影名称">
+            <button class="btn btn-success" type="submit">
+            <i class="bi bi-plus-lg"></i> Add
+            </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="filmsList">
+    {% include "partials/films_list.html" %}
+  </div>
+</div>
+{% endblock %}
