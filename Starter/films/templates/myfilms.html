@@ -3,15 +3,21 @@
 {% block content %}
 <div class="container mt-4">
   <div class="row mb-4">
-    <div class="col-12 d-flex justify-content-end">
-      <div class="input-group" style="max-width: 400px;">
-        <form hx-post="{% url 'add-film' %}" hx-target="#filmsList" class="d-flex w-100">
-            {% csrf_token %}
-            <input type="text" class="form-control" name="filmname" placeholder="输入电影名称">
-            <button class="btn btn-success" type="submit">
-            <i class="bi bi-plus-lg"></i> Add
-            </button>
-        </form>
+    <div class="offset-8 input-group d-flex flex-column">
+      <form hx-post="{% url 'add-film' %}" hx-target="#filmsList" class="d-flex" style="max-width: 375px;">
+          {% csrf_token %}
+          <input type="text" class="form-control" name="filmname" placeholder="输入电影名称"
+            hx-get="{% url 'search-film' %}" hx-trigger="input changed delay:300ms" hx-target="#autocompleteItems">
+          <button class="btn btn-success" type="submit">
+          <i class="bi bi-plus-lg text-white"></i> Add
+          </button>
+      </form>
+      <div id="autocompleteItems" class="list-group mt-1" style="max-width: 375px;">
+        <ul class="list-group">
+          {% for film in films %}
+              <li class="list-group-item">{{ film.name }}</li>
+          {% endfor %}
+        </ul>
       </div>
     </div>
   </div>

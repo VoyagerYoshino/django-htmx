@@ -40,11 +40,23 @@ def add_film(request):
         
         films = request.user.films.all()
         return render(request, "partials/films_list.html", {"films":films})
-    
+
+def search_film(request):
+    if request.method == "GET":
+        name = request.GET.get("filmname","")
+        if name:
+            films = Film.objects.filter(name__icontains=name)[0:10]
+            print(list(films))
+        else:
+            films = []
+        return render(request, "partials/search_results.html", {"films":films})
+
+
 @login_required
 @require_http_methods(["DELETE"])
 def delete_film(request, pk):
     request.user.films.remove(pk)
     films = request.user.films.all()
     return render(request, "partials/films_list.html", {"films":films})
+
     
