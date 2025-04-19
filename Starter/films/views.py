@@ -49,7 +49,7 @@ def search_film(request):
             print(list(films))
         else:
             films = []
-        return render(request, "partials/search_results.html", {"films":films})
+        return render(request,"partials/search_results.html", {"films":films})
 
 
 @login_required
