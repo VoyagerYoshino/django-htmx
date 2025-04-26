@@ -6,9 +6,9 @@
     <div class="offset-8 input-group d-flex flex-column">
       <form hx-post="{% url 'add-film' %}" hx-target="#filmsList" class="d-flex" style="max-width: 375px;">
           {% csrf_token %}
-          <input type="text" class="form-control" name="filmname" placeholder="输入电影名称"
+          <input type="text" id="filmInput" class="form-control" name="filmname" placeholder="输入电影名称"
             hx-get="{% url 'search-film' %}" hx-trigger="input changed delay:300ms" hx-target="#autocompleteItems">
-          <button class="btn btn-success" type="submit">
+          <button class="btn btn-success px-3 " type="submit">
           <i class="bi bi-plus-lg text-white"></i> Add
           </button>
       </form>

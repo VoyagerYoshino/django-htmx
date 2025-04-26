@@ -1,0 +1,11 @@
+<input 
+    type="text" 
+    class="form-control" 
+    name="filmname" 
+    id="filmInput" 
+    placeholder="输入电影名称"
+    hx-get="{% url 'search-film' %}" 
+    hx-trigger="input changed delay:300ms" 
+    hx-target="#autocompleteItems"
+    value="{{ film.name }}"
+>

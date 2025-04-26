@@ -1,5 +1,8 @@
 <ul class="list-group">
-{% for film in films %}
-    <li class="list-group-item">{{ film.name }}</li>
-{% endfor %}
-</ul>
+    {% for film in films %}
+        <li class="list-group-item" hx-get="{% url 'autocomplete-filmname' film.id %}"
+            hx-target="#filmInput" hx-swap="outerHTML" hx-trigger="click" style="cursor: pointer;">
+            {{ film.name }}
+        </li>
+    {% endfor %}
+    </ul>

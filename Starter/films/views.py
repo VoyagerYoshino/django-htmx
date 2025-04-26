@@ -51,7 +51,10 @@ def search_film(request):
             films = []
         return render(request,"partials/search_results.html", {"films":films})
 
-
+def autocomplete_filmname(request, film_id):
+    film = Film.objects.get(id=film_id)
+    return render(request, "partials/autocomplete_filmname.html", {"film": film})
+    
 @login_required
 @require_http_methods(["DELETE"])
 def delete_film(request, pk):
